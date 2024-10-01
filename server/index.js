@@ -17,6 +17,12 @@ const makeSs = async() =>{
     await browser.close()
 }
 
+function delay(time) {
+    return new Promise(function(resolve) { 
+        setTimeout(resolve, time);
+    });
+}
+
 
 (async () => {
     // Launch the browser
@@ -43,11 +49,10 @@ const makeSs = async() =>{
         }
     }
 
-    await page.waitForSelector('div.v-button.v-widget.language.v-button-language');
+    await delay(1500);
+    // Wait for the span element with the class 'v-button-wrap'
+    await page.waitForSelector('span.v-button-wrap');
 
-    await page.screenshot({path: 'ex.png'})
-
-    // Close the browser
     await browser.close();
 })();
 
