@@ -23,6 +23,93 @@ function delay(time) {
     });
 }
 
+const getMara = async(page) => {
+    await page.waitForSelector('span.v-button-wrap');
+
+    const menuItems = await page.$$('div.v-button.v-widget.multiline.v-button-multiline > span.v-button-wrap > .v-button-caption')
+    let menuData = [];
+    for (const item of menuItems) {
+        const title = await item.$('span.multiline-button-caption-text')
+        const dinnerOption = await page.evaluate(span => span.textContent.trim(), title);
+
+        menuData.push({ dinnerOption, menuItems: [] });
+
+        const subMenuItems = await item.$$('span.menu-item');
+        
+        for (let subItem of subMenuItems) {
+            const menuItemText = await subItem.evaluate(el => el.innerText.trim());
+            menuData[menuData.length - 1].menuItems.push(menuItemText);
+        }
+
+    }
+
+    console.log(menuData)
+}
+
+function getCurrentWeekday(){
+    //Получение текущей даты
+    const date = now.getDate(); // День месяца (1-31)
+    const month = now.getMonth() + 1; // Месяц (0-11, где 0 — это январь, поэтому прибавляем 1)
+    const year = now.getFullYear(); // Полный год
+
+    // Получение текущего времени
+    const hours = now.getHours(); // Часы (0-23)
+    const minutes = now.getMinutes(); // Минуты (0-59)
+    const seconds = now.getSeconds(); // Секунды (0-59)
+
+    // Получение дня недели
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const weekday = daysOfWeek[now.getDay()]; // getDay() возвращает число от 0 (воскресенье) до 6 (суббота)
+
+    // Форматирование даты и времени
+    const formattedDate = `${date}/${month}/${year}`;
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+    return weekday
+}
+
+function getCurrentDate(){
+    //Получение текущей даты
+    const date = now.getDate(); // День месяца (1-31)
+    const month = now.getMonth() + 1; // Месяц (0-11, где 0 — это январь, поэтому прибавляем 1)
+    const year = now.getFullYear(); // Полный год
+
+    // Получение текущего времени
+    const hours = now.getHours(); // Часы (0-23)
+    const minutes = now.getMinutes(); // Минуты (0-59)
+    const seconds = now.getSeconds(); // Секунды (0-59)
+
+    // Получение дня недели
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const weekday = daysOfWeek[now.getDay()]; // getDay() возвращает число от 0 (воскресенье) до 6 (суббота)
+
+    // Форматирование даты и времени
+    let formattedDate = [month, date, year - 2000]
+    const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+    return formattedDate
+}
+
+async function navigateToDate(page){
+    const menuDateElement = await page.$("div.v-label.v-widget.sub-title.v-label-sub-title.v-has-width")
+    const textDate = await page.evaluate(span => span.textContent.trim(), menuDateElement);
+
+    let websiteDate = textDate.split(" ");
+    websiteDate = websiteDate[1].split("/").map(n => Number(n)) //website date
+    let weekday = getCurrentWeekday();
+    let systemDate = getCurrentDate(); //system date
+
+    const nextButton = await page.$("div.v-button.v-widget.date.v-button-date.date--next.v-button-date--next")
+    const prevButton = await page.$("div.v-button.v-widget date.v-button-date.date--previous.v-button-date--previous")
+
+    
+    await nextButton.click();
+    await delay(2000)
+    await page.screenshot({path: 'exemple.png'})
+
+    console.log(systemDate)
+    console.log(websiteDate)
+}
 
 (async () => {
     // Launch the browser
@@ -50,8 +137,10 @@ function delay(time) {
     }
 
     await delay(1500);
-    // Wait for the span element with the class 'v-button-wrap'
-    await page.waitForSelector('span.v-button-wrap');
+
+    await getMara(page)
+
+    await navigateToDate(page)
 
     await browser.close();
 })();
