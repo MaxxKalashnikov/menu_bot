@@ -43,7 +43,8 @@ const getMara = async(page) => {
 
     }
 
-    console.log(menuData)
+    //console.log(menuData)
+    return menuData
 }
 
 function getCurrentWeekday(){
@@ -90,20 +91,32 @@ function getCurrentDate(){
     return formattedDate
 }
 
-async function navigateToDate(page){
+async function getWebsiteDate(page){
     const menuDateElement = await page.$("div.v-label.v-widget.sub-title.v-label-sub-title.v-has-width")
     const textDate = await page.evaluate(span => span.textContent.trim(), menuDateElement);
 
     let websiteDate = textDate.split(" ");
     websiteDate = websiteDate[1].split("/").map(n => Number(n)) //website date
-    let weekday = getCurrentWeekday();
-    let systemDate = getCurrentDate(); //system date
 
+    return websiteDate
+}
+
+async function navigateToDate(page){
+    let systemDate = getCurrentDate(); //system date
+    let websiteDate = await getWebsiteDate(page)
     const nextButton = await page.$("div.v-button.v-widget.date.v-button-date.date--next.v-button-date--next")
     const prevButton = await page.$("div.v-button.v-widget date.v-button-date.date--previous.v-button-date--previous")
 
+    if(systemDate[0] == websiteDate[0]){
+        while(systemDate[1] > websiteDate[1]){ // 10 > 5
+            await nextButton.click()
+            await delay(1400)
+            websiteDate = await getWebsiteDate(page)
+        }
+    }else {
+        console.log("i have no idea what to do in this case")
+    }
     
-    await nextButton.click();
     await delay(2000)
     await page.screenshot({path: 'exemple.png'})
 
@@ -111,8 +124,15 @@ async function navigateToDate(page){
     console.log(websiteDate)
 }
 
+async function changeLang(page){
+    
+}
+
 (async () => {
-    // Launch the browser
+    let weekday = getCurrentWeekday();
+
+    if(weekday != 'Saturday' && weekday != 'Sunday'){
+        // Launch the browser
     const browser = await puppeteer.launch({ headless: false }); // Set headless to true if you don't want to see the browser
     const page = await browser.newPage();
 
@@ -137,12 +157,20 @@ async function navigateToDate(page){
     }
 
     await delay(1500);
-
-    await getMara(page)
-
     await navigateToDate(page)
+    const maraArray = await getMara(page)
 
+    await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=118');
+
+    const kerttuArray = await getMara(page)
     await browser.close();
+
+    console.log(maraArray)
+    console.log(kerttuArray)
+    }else{
+        console.log('sorry, not today')
+    }
+    
 })();
 
 // Получение текущей даты
