@@ -23,7 +23,7 @@ function delay(time) {
     });
 }
 
-const getMara = async(page) => {
+const getDataForJamix = async(page) => {
     await page.waitForSelector('span.v-button-wrap');
 
     const menuItems = await page.$$('div.v-button.v-widget.multiline.v-button-multiline > span.v-button-wrap > .v-button-caption')
@@ -47,24 +47,28 @@ const getMara = async(page) => {
     return menuData
 }
 
+async function getDataForUniresta(page){
+    let todaysDate = getCurrentDate(); 
+    let formattedDate = `${todaysDate[2] + 2000}-${todaysDate[0]}-${todaysDate[1]}`     //should be 2024-09-30
+    await page.goto(`https://mealdoo.com/week/uniresta/lipasto/ravintolalipasto?date=${formattedDate}&lang=en&openAll=false&theme=light--light-green`)
+    await page.waitForSelector('div.container__menu-day-date--current')
+    
+    await delay(2000)
+    const expandedPanel = await page.$('mat-expansion-panel.public-menu-container-border.ng-tns-c330948415-4.mat-expanded.ng-star-inserted[ng-reflect-expanded="true"]');
+    const meals = await expandedPanel.$$('div.container__menu-day-row')
+    for(const item of meals){
+        const menuItemText = await item.evaluate(el => el.textContent.trim());
+        console.log(menuItemText.replace(/Carbon.*/g, ''), '')
+    }
+
+    // const menuContent = await parentComponent.$('.container__menu-day-row-name');
+    // const contentText = await menuContent.evaluate(el => el.innerText);
+    //console.log(menuItemText);
+}
+
 function getCurrentWeekday(){
-    //Получение текущей даты
-    const date = now.getDate(); // День месяца (1-31)
-    const month = now.getMonth() + 1; // Месяц (0-11, где 0 — это январь, поэтому прибавляем 1)
-    const year = now.getFullYear(); // Полный год
-
-    // Получение текущего времени
-    const hours = now.getHours(); // Часы (0-23)
-    const minutes = now.getMinutes(); // Минуты (0-59)
-    const seconds = now.getSeconds(); // Секунды (0-59)
-
-    // Получение дня недели
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const weekday = daysOfWeek[now.getDay()]; // getDay() возвращает число от 0 (воскресенье) до 6 (суббота)
-
-    // Форматирование даты и времени
-    const formattedDate = `${date}/${month}/${year}`;
-    const formattedTime = `${hours}:${minutes}:${seconds}`;
 
     return weekday
 }
@@ -75,19 +79,7 @@ function getCurrentDate(){
     const month = now.getMonth() + 1; // Месяц (0-11, где 0 — это январь, поэтому прибавляем 1)
     const year = now.getFullYear(); // Полный год
 
-    // Получение текущего времени
-    const hours = now.getHours(); // Часы (0-23)
-    const minutes = now.getMinutes(); // Минуты (0-59)
-    const seconds = now.getSeconds(); // Секунды (0-59)
-
-    // Получение дня недели
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const weekday = daysOfWeek[now.getDay()]; // getDay() возвращает число от 0 (воскресенье) до 6 (суббота)
-
-    // Форматирование даты и времени
     let formattedDate = [month, date, year - 2000]
-    const formattedTime = `${hours}:${minutes}:${seconds}`;
-
     return formattedDate
 }
 
@@ -105,7 +97,7 @@ async function navigateToDate(page){
     let systemDate = getCurrentDate(); //system date
     let websiteDate = await getWebsiteDate(page)
     const nextButton = await page.$("div.v-button.v-widget.date.v-button-date.date--next.v-button-date--next")
-    const prevButton = await page.$("div.v-button.v-widget date.v-button-date.date--previous.v-button-date--previous")
+    const prevButton = await page.$("div.v-button.v-widget.date.v-button-date.date--previous.v-button-date--previous")
 
     if(systemDate[0] == websiteDate[0]){
         while(systemDate[1] > websiteDate[1]){ // 10 > 5
@@ -117,29 +109,13 @@ async function navigateToDate(page){
         console.log("i have no idea what to do in this case")
     }
     
-    await delay(2000)
-    await page.screenshot({path: 'exemple.png'})
+    await delay(1000)
 
     console.log(systemDate)
     console.log(websiteDate)
 }
 
 async function changeLang(page){
-    
-}
-
-(async () => {
-    let weekday = getCurrentWeekday();
-
-    if(weekday != 'Saturday' && weekday != 'Sunday'){
-        // Launch the browser
-    const browser = await puppeteer.launch({ headless: false }); // Set headless to true if you don't want to see the browser
-    const page = await browser.newPage();
-
-    // Go to the page where the buttons are located
-    await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=49&mt=111'); // Replace with the actual URL
-
-    // Wait for the buttons to be visible
     await page.waitForSelector('div.v-button.v-widget.language.v-button-language');
 
     // Click the button with the text "English"
@@ -156,17 +132,48 @@ async function changeLang(page){
         }
     }
 
-    await delay(1500);
-    await navigateToDate(page)
-    const maraArray = await getMara(page)
+    await delay(1000);
+}
 
-    await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=118');
+(async () => {
+    let weekday = getCurrentWeekday();
 
-    const kerttuArray = await getMara(page)
+    if(weekday != 'Saturday' && weekday != 'Sunday'){
+        // Launch the browser
+    const browser = await puppeteer.launch({ headless: false }); // Set headless to true if you don't want to see the browser
+    const page = await browser.newPage();
+    await getDataForUniresta(page)
+    //mara
+    // await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=49&mt=111');
+    // await changeLang(page)
+    // await navigateToDate(page)
+    // const maraArray = await getDataForJamix(page)
+    // //kerttu
+    // await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=118');
+    // await changeLang(page)
+    // await navigateToDate(page)
+    // const kerttuArray = await getDataForJamix(page)
+    // //voltti
+    // await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=119');
+    // await changeLang(page)
+    // await navigateToDate(page)
+    // const volttiArray = await getDataForJamix(page)
+
     await browser.close();
+    //console.log("MARA TODAY:")
+    // for(const item of maraArray){
+    //     console.log(item)
+    // }
+    // console.log("\n\nKERTTU TODAY:")
+    // for (const item of kerttuArray){
+    //     console.log(item)
 
-    console.log(maraArray)
-    console.log(kerttuArray)
+    // }
+    // console.log("\n\n\nVOLTTI TODAY:")
+    // for (const item of volttiArray){
+    //     console.log(item)
+
+    // }
     }else{
         console.log('sorry, not today')
     }
