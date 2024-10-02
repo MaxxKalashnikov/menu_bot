@@ -50,21 +50,76 @@ const getDataForJamix = async(page) => {
 async function getDataForUniresta(page){
     let todaysDate = getCurrentDate(); 
     let formattedDate = `${todaysDate[2] + 2000}-${todaysDate[0]}-${todaysDate[1]}`     //should be 2024-09-30
-    await page.goto(`https://mealdoo.com/week/uniresta/lipasto/ravintolalipasto?date=${formattedDate}&lang=en&openAll=false&theme=light--light-green`)
-    await page.waitForSelector('div.container__menu-day-date--current')
-    
-    await delay(2000)
+
+    await page.goto(`https://mealdoo.com/week/uniresta/lipasto/ravintolalipasto?date=${formattedDate}&lang=en&openAll=false&theme=light--light-green`);
+    await page.waitForSelector('div.container__menu-day-date--current');
+    await delay(2000);
+
     const expandedPanel = await page.$('mat-expansion-panel.public-menu-container-border.ng-tns-c330948415-4.mat-expanded.ng-star-inserted[ng-reflect-expanded="true"]');
-    const meals = await expandedPanel.$$('div.container__menu-day-row')
-    for(const item of meals){
-        const menuItemText = await item.evaluate(el => el.textContent.trim());
-        console.log(menuItemText.replace(/Carbon.*/g, ''), '')
+    const elements = await expandedPanel.$$('h2.header__menu-day-meal-option.ng-star-inserted, div.container__menu-day-row');
+
+    let topics = [];
+    let currentTopic = null;
+    let currentMeals = [];
+
+    for (const el of elements) {
+        const tagName = await el.evaluate(el => el.tagName.toLowerCase());
+
+        if (tagName === 'h2') {
+            if (currentTopic !== null) {
+                topics.push({ topic: currentTopic, meals: currentMeals });
+            }
+            
+            currentTopic = await el.evaluate(el => el.textContent.trim());
+            currentMeals = [];
+        }
+
+        if (tagName === 'div') {
+            const mealText = await el.evaluate(el => el.textContent.trim());
+            currentMeals.push(mealText.replace(/Carbon.*/g, '').replace(/\beco\b/g, '').replace(/Info\S*/g, '').replace(/\bKELA\b/g, '').trim());
+        }
     }
 
-    // const menuContent = await parentComponent.$('.container__menu-day-row-name');
-    // const contentText = await menuContent.evaluate(el => el.innerText);
-    //console.log(menuItemText);
+    if (currentTopic !== null) {
+        topics.push({ topic: currentTopic, meals: currentMeals });
+    }
+
+    // Log or return the topics
+    //console.log(topics);
+    let dietArr = ["Gluten free", "Lactose free", "Milk free", "Vegan"];
+
+    for (let i = 0; i < topics.length; i++) {
+        for (let j = 0; j < dietArr.length; j++){
+            for(let k = 0; k < topics[i].meals.length; k++){
+                if(topics[i].meals[k].includes(dietArr[j])){
+                    let regex = new RegExp(dietArr[j], 'gi');
+                    topics[i].meals[k] = topics[i].meals[k].replace(regex, '').trim()
+                }
+            }
+        }
+        topics[i].meals = topics[i].meals.filter(item => item !== '');
+    }
+
+    console.log(topics);
+
 }
+
+// await page.goto(`https://mealdoo.com/week/uniresta/lipasto/ravintolalipasto?date=${formattedDate}&lang=en&openAll=false&theme=light--light-green`)
+    // await page.waitForSelector('div.container__menu-day-date--current')
+    
+    // await delay(2000)
+    // const expandedPanel = await page.$('mat-expansion-panel.public-menu-container-border[ng-reflect-expanded="true"]');
+    // const meals = await expandedPanel.$$('div.container__menu-day-row')
+    // const title = await expandedPanel.$$('h2.header__menu-day-meal-option.ng-star-inserted')
+    // for(const item of title){
+    //     const eachTitle = await item.evaluate(el => el.textContent.trim());
+    //     console.log(eachTitle)
+    // }
+
+    // for(const sitem of meals){
+    //     const menuItemText = await sitem.evaluate(el => el.textContent.trim());
+    //     console.log(menuItemText.replace(/Carbon.*/g, '').replace(/\beco\b/g, '').replace(/Info\S*/g, ''), '')
+    // }
 
 function getCurrentWeekday(){
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
