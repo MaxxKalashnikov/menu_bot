@@ -8,15 +8,6 @@
 const puppeteer = require('puppeteer')
 const now = new Date();
 
-const makeSs = async() =>{
-    const browser = await puppeteer.launch({headless: true});
-    const page = await browser.newPage();
-    await page.goto("https://fi.jamix.cloud/apps/menu/?anro=93077&k=49&mt=111");
-    await page.waitForSelector()
-    await page.screenshot({path: 'exemple.png'})
-    await browser.close()
-}
-
 function delay(time) {
     return new Promise(function(resolve) { 
         setTimeout(resolve, time);
@@ -42,20 +33,14 @@ const getDataForJamix = async(page) => {
         }
 
     }
-
-    //console.log(menuData)
     return menuData
 }
 
 async function getDataForUniresta(page){
-    let todaysDate = getCurrentDate(); 
-    let formattedDate = `${todaysDate[2] + 2000}-${todaysDate[0]}-${todaysDate[1]}`     //should be 2024-09-30
-
-    await page.goto(`https://mealdoo.com/week/uniresta/lipasto/ravintolalipasto?date=${formattedDate}&lang=en&openAll=false&theme=light--light-green`);
     await page.waitForSelector('div.container__menu-day-date--current');
     await delay(2000);
 
-    const expandedPanel = await page.$('mat-expansion-panel.public-menu-container-border.ng-tns-c330948415-4.mat-expanded.ng-star-inserted[ng-reflect-expanded="true"]');
+    const expandedPanel = await page.$('mat-expansion-panel.public-menu-container-border[ng-reflect-expanded="true"]');
     const elements = await expandedPanel.$$('h2.header__menu-day-meal-option.ng-star-inserted, div.container__menu-day-row');
 
     let topics = [];
@@ -84,42 +69,40 @@ async function getDataForUniresta(page){
         topics.push({ topic: currentTopic, meals: currentMeals });
     }
 
-    // Log or return the topics
-    //console.log(topics);
-    let dietArr = ["Gluten free", "Lactose free", "Milk free", "Vegan"];
+    let dietArr = ["Gluten free", "Lactose free", "Milk free", "Vegan", "Contains allergens"];
+    let newArr = []
 
     for (let i = 0; i < topics.length; i++) {
-        for (let j = 0; j < dietArr.length; j++){
-            for(let k = 0; k < topics[i].meals.length; k++){
-                if(topics[i].meals[k].includes(dietArr[j])){
+        let topicObj = {
+            topic: topics[i].topic, 
+            meals: []               
+        }; 
+        for (let k = 0; k < topics[i].meals.length; k++) {
+            let newObj = {
+                meal: "",  
+                diets: []   
+            };
+            for (let j = 0; j < dietArr.length; j++) {
+                if (topics[i].meals[k].includes(dietArr[j])) {
                     let regex = new RegExp(dietArr[j], 'gi');
-                    topics[i].meals[k] = topics[i].meals[k].replace(regex, '').trim()
+                    topics[i].meals[k] = topics[i].meals[k].replace(regex, '').trim();
+                    newObj.diets.push(dietArr[j]);
                 }
             }
+            newObj.meal = topics[i].meals[k].charAt(0).toUpperCase() + topics[i].meals[k].slice(1);
+            topicObj.meals.push(newObj);
         }
+    
+        newArr.push(topicObj);
         topics[i].meals = topics[i].meals.filter(item => item !== '');
     }
 
-    console.log(topics);
-
-}
-
-// await page.goto(`https://mealdoo.com/week/uniresta/lipasto/ravintolalipasto?date=${formattedDate}&lang=en&openAll=false&theme=light--light-green`)
-    // await page.waitForSelector('div.container__menu-day-date--current')
+    newArr.forEach(element => {
+        console.log(element);
+    });
     
-    // await delay(2000)
-    // const expandedPanel = await page.$('mat-expansion-panel.public-menu-container-border[ng-reflect-expanded="true"]');
-    // const meals = await expandedPanel.$$('div.container__menu-day-row')
-    // const title = await expandedPanel.$$('h2.header__menu-day-meal-option.ng-star-inserted')
-    // for(const item of title){
-    //     const eachTitle = await item.evaluate(el => el.textContent.trim());
-    //     console.log(eachTitle)
-    // }
-
-    // for(const sitem of meals){
-    //     const menuItemText = await sitem.evaluate(el => el.textContent.trim());
-    //     console.log(menuItemText.replace(/Carbon.*/g, '').replace(/\beco\b/g, '').replace(/Info\S*/g, ''), '')
-    // }
+    
+}
 
 function getCurrentWeekday(){
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -197,38 +180,45 @@ async function changeLang(page){
         // Launch the browser
     const browser = await puppeteer.launch({ headless: false }); // Set headless to true if you don't want to see the browser
     const page = await browser.newPage();
-    await getDataForUniresta(page)
+    
     //mara
-    // await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=49&mt=111');
-    // await changeLang(page)
-    // await navigateToDate(page)
-    // const maraArray = await getDataForJamix(page)
-    // //kerttu
-    // await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=118');
-    // await changeLang(page)
-    // await navigateToDate(page)
-    // const kerttuArray = await getDataForJamix(page)
-    // //voltti
-    // await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=119');
-    // await changeLang(page)
-    // await navigateToDate(page)
-    // const volttiArray = await getDataForJamix(page)
-
+    await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=49&mt=111');
+    await changeLang(page)
+    await navigateToDate(page)
+    const maraArray = await getDataForJamix(page)
+    //kerttu
+    await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=118');
+    await changeLang(page)
+    await navigateToDate(page)
+    const kerttuArray = await getDataForJamix(page)
+    //voltti
+    await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=119');
+    await changeLang(page)
+    await navigateToDate(page)
+    const volttiArray = await getDataForJamix(page)
+    //lipasto
+    let todaysDate = getCurrentDate(); 
+    let formattedDate = `${todaysDate[2] + 2000}-${todaysDate[0]}-${todaysDate[1]}`     //should be 2024-09-30
+    await page.goto(`https://mealdoo.com/week/uniresta/lipasto/ravintolalipasto?date=${formattedDate}&lang=en&openAll=false&theme=light--light-green`);
+    await getDataForUniresta(page)
+    //julinia
+    await page.goto(`https://mealdoo.com/week/uniresta/julinia/ravintolajulinia?date=${formattedDate}&lang=en&openAll=false&theme=light--green`);
+    await getDataForUniresta(page)
     await browser.close();
-    //console.log("MARA TODAY:")
-    // for(const item of maraArray){
-    //     console.log(item)
-    // }
-    // console.log("\n\nKERTTU TODAY:")
-    // for (const item of kerttuArray){
-    //     console.log(item)
+    console.log("MARA TODAY:")
+    for(const item of maraArray){
+        console.log(item)
+    }
+    console.log("\n\nKERTTU TODAY:")
+    for (const item of kerttuArray){
+        console.log(item)
 
-    // }
-    // console.log("\n\n\nVOLTTI TODAY:")
-    // for (const item of volttiArray){
-    //     console.log(item)
+    }
+    console.log("\n\n\nVOLTTI TODAY:")
+    for (const item of volttiArray){
+        console.log(item)
 
-    // }
+    }
     }else{
         console.log('sorry, not today')
     }
