@@ -33,7 +33,54 @@ const getDataForJamix = async(page) => {
         }
 
     }
-    return menuData
+
+    let dietArr = ["Mu", "*", "M", "G", "VEG", "L"];
+    let newArr = []
+
+    for (let i = 0; i < menuData.length; i++) {
+        let topicObj = {
+            topic: menuData[i].dinnerOption,
+            meals: []               
+        };
+    
+        for (let k = 0; k < menuData[i].menuItems.length; k++) {
+            let newObj = {
+                meal: "",  
+                diets: []   
+            };
+    
+            let currentMeal = menuData[i].menuItems[k];
+    
+            for (let j = 0; j < dietArr.length; j++) {
+                let safeDiet = dietArr[j].replace(/[.*+?^${}()|[\]\\]/g, '\\$&');  
+                let regex = new RegExp(`\\b${safeDiet}\\b`, 'g');  
+    
+                if (regex.test(currentMeal)) {
+                    if (!newObj.diets.includes(dietArr[j])) {
+                        newObj.diets.push(dietArr[j]);
+                    }
+                    currentMeal = currentMeal.replace(regex, '').replace(/[,*]/g, '').trim();
+                }
+            }
+    
+            newObj.meal = currentMeal.charAt(0).toUpperCase() + currentMeal.slice(1);
+            if (newObj.meal !== '') {
+                topicObj.meals.push(newObj);
+            }
+        }
+    
+        if (topicObj.meals.length > 0) {
+            newArr.push(topicObj);
+        }
+
+        menuData[i].menuItems = menuData[i].menuItems.filter(item => item !== '');
+    }
+
+    newArr.forEach(element => {
+        console.log(element)
+    });
+
+    return newArr
 }
 
 async function getDataForUniresta(page){
@@ -90,10 +137,14 @@ async function getDataForUniresta(page){
                 }
             }
             newObj.meal = topics[i].meals[k].charAt(0).toUpperCase() + topics[i].meals[k].slice(1);
-            topicObj.meals.push(newObj);
+            if (newObj.meal !== '') {
+                topicObj.meals.push(newObj);
+            }
         }
     
-        newArr.push(topicObj);
+        if (topicObj.meals.length > 0) {
+            newArr.push(topicObj);
+        }
         topics[i].meals = topics[i].meals.filter(item => item !== '');
     }
 
@@ -106,16 +157,15 @@ async function getDataForUniresta(page){
 
 function getCurrentWeekday(){
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const weekday = daysOfWeek[now.getDay()]; // getDay() возвращает число от 0 (воскресенье) до 6 (суббота)
+    const weekday = daysOfWeek[now.getDay()];
 
     return weekday
 }
 
 function getCurrentDate(){
-    //Получение текущей даты
-    const date = now.getDate(); // День месяца (1-31)
-    const month = now.getMonth() + 1; // Месяц (0-11, где 0 — это январь, поэтому прибавляем 1)
-    const year = now.getFullYear(); // Полный год
+    const date = now.getDate(); 
+    const month = now.getMonth() + 1; 
+    const year = now.getFullYear(); 
 
     let formattedDate = [month, date, year - 2000]
     return formattedDate
@@ -144,13 +194,10 @@ async function navigateToDate(page){
             websiteDate = await getWebsiteDate(page)
         }
     }else {
-        console.log("i have no idea what to do in this case")
+        console.log("i have no idea what to do in this case, well probably i have an idea but its so not likely that this is going to happend that im not even going to emplement a solution for this because i simply dont have enough time, so mabe later...")
     }
     
     await delay(1000)
-
-    console.log(systemDate)
-    console.log(websiteDate)
 }
 
 async function changeLang(page){
@@ -165,7 +212,6 @@ async function changeLang(page){
         
         if (text === 'English') {
             await button.click(); // Click the button if text matches "English"
-            console.log('Clicked the English button');
             break; // Exit the loop once the button is clicked
         }
     }
@@ -205,20 +251,20 @@ async function changeLang(page){
     await page.goto(`https://mealdoo.com/week/uniresta/julinia/ravintolajulinia?date=${formattedDate}&lang=en&openAll=false&theme=light--green`);
     await getDataForUniresta(page)
     await browser.close();
-    console.log("MARA TODAY:")
-    for(const item of maraArray){
-        console.log(item)
-    }
-    console.log("\n\nKERTTU TODAY:")
-    for (const item of kerttuArray){
-        console.log(item)
+    // console.log("MARA TODAY:")
+    // for(const item of maraArray){
+    //     console.log(item)
+    // }
+    // console.log("\n\nKERTTU TODAY:")
+    // for (const item of kerttuArray){
+    //     console.log(item)
 
-    }
-    console.log("\n\n\nVOLTTI TODAY:")
-    for (const item of volttiArray){
-        console.log(item)
+    // }
+    // console.log("\n\n\nVOLTTI TODAY:")
+    // for (const item of volttiArray){
+    //     console.log(item)
 
-    }
+    // }
     }else{
         console.log('sorry, not today')
     }
