@@ -6,6 +6,10 @@
 // https://mealdoo.com/week/uniresta/julinia/ravintolajulinia?date=2024-09-30&lang=en&theme=light--green julinia (foobar)
 
 const puppeteer = require('puppeteer')
+const express = require('express');
+require('dotenv').config()
+
+const menuRouter = express.Router();
 const now = new Date();
 
 function delay(time) {
@@ -76,9 +80,9 @@ const getDataForJamix = async(page) => {
         menuData[i].menuItems = menuData[i].menuItems.filter(item => item !== '');
     }
 
-    newArr.forEach(element => {
-        console.log(element)
-    });
+    // newArr.forEach(element => {
+    //     console.log(element)
+    // });
 
     return newArr
 }
@@ -148,11 +152,11 @@ async function getDataForUniresta(page){
         topics[i].meals = topics[i].meals.filter(item => item !== '');
     }
 
-    newArr.forEach(element => {
-        console.log(element);
-    });
+    // newArr.forEach(element => {
+    //     console.log(element);
+    // });
     
-    
+    return newArr
 }
 
 function getCurrentWeekday(){
@@ -219,58 +223,70 @@ async function changeLang(page){
     await delay(1000);
 }
 
-(async () => {
-    let weekday = getCurrentWeekday();
+menuRouter.get('/getmenu', async(req, res) => {
+    try {
+        let weekday = getCurrentWeekday();
 
-    if(weekday != 'Saturday' && weekday != 'Sunday'){
-        // Launch the browser
-    const browser = await puppeteer.launch({ headless: false }); // Set headless to true if you don't want to see the browser
-    const page = await browser.newPage();
-    
-    //mara
-    await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=49&mt=111');
-    await changeLang(page)
-    await navigateToDate(page)
-    const maraArray = await getDataForJamix(page)
-    //kerttu
-    await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=118');
-    await changeLang(page)
-    await navigateToDate(page)
-    const kerttuArray = await getDataForJamix(page)
-    //voltti
-    await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=119');
-    await changeLang(page)
-    await navigateToDate(page)
-    const volttiArray = await getDataForJamix(page)
-    //lipasto
-    let todaysDate = getCurrentDate(); 
-    let formattedDate = `${todaysDate[2] + 2000}-${todaysDate[0]}-${todaysDate[1]}`     //should be 2024-09-30
-    await page.goto(`https://mealdoo.com/week/uniresta/lipasto/ravintolalipasto?date=${formattedDate}&lang=en&openAll=false&theme=light--light-green`);
-    await getDataForUniresta(page)
-    //julinia
-    await page.goto(`https://mealdoo.com/week/uniresta/julinia/ravintolajulinia?date=${formattedDate}&lang=en&openAll=false&theme=light--green`);
-    await getDataForUniresta(page)
-    await browser.close();
-    // console.log("MARA TODAY:")
-    // for(const item of maraArray){
-    //     console.log(item)
-    // }
-    // console.log("\n\nKERTTU TODAY:")
-    // for (const item of kerttuArray){
-    //     console.log(item)
+        if(weekday != 'Saturday' && weekday != 'Sunday'){
+            // Launch the browser
+        const browser = await puppeteer.launch({ headless: true }); 
+        const page = await browser.newPage();
+        console.log('starting...')
+        //mara
+        await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=49&mt=111');
+        await console.log('fetching mara...')
+        await changeLang(page)
+        await navigateToDate(page)
+        const maraArray = await getDataForJamix(page)
+        await console.log('mara fetched')
+        //kerttu
+        await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=118');
+        await console.log('fetching kerttu...')
+        await changeLang(page)
+        await navigateToDate(page)
+        const kerttuArray = await getDataForJamix(page)
+        await console.log('kerttu fetched')
+        //voltti
+        await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=119');
+        await console.log('fetching voltti...')
+        await changeLang(page)
+        await navigateToDate(page)
+        const volttiArray = await getDataForJamix(page)
+        await console.log('voltti fetched')
+        //lipasto
+        let todaysDate = getCurrentDate(); 
+        let formattedDate = `${todaysDate[2] + 2000}-${todaysDate[0]}-${todaysDate[1]}`     //should be 2024-09-30
+        await page.goto(`https://mealdoo.com/week/uniresta/lipasto/ravintolalipasto?date=${formattedDate}&lang=en&openAll=false&theme=light--light-green`);
+        await console.log('fetching lipasto...')
+        const lipArray = await getDataForUniresta(page)
+        await console.log('lipasto fetched')
+        //julinia
+        await page.goto(`https://mealdoo.com/week/uniresta/julinia/ravintolajulinia?date=${formattedDate}&lang=en&openAll=false&theme=light--green`);
+        await console.log('fetching julinia...')
+        const julArray = await getDataForUniresta(page)
+        await console.log('julinia fetched')
+        await browser.close();
 
-    // }
-    // console.log("\n\n\nVOLTTI TODAY:")
-    // for (const item of volttiArray){
-    //     console.log(item)
+        const combinedArray ={
+            mara: [...maraArray],
+            kerttu: [...kerttuArray],
+            voltti: [...volttiArray],
+            lipasto: [...lipArray],
+            julinia: [...julArray]
+        };
 
-    // }
-    }else{
-        console.log('sorry, not today')
+        res.status(200).json(combinedArray);
+        }else{
+            console.log('sorry, not today')
+            response.status(500).json('sorry, not today');
+        }
+    } catch (error) {
+        console.log(error)
+        response.status(500).json({ error: error.message });
     }
-    
-})();
+})
 
+module.exports = {menuRouter}
 // Получение текущей даты
 // const date = now.getDate(); // День месяца (1-31)
 // const month = now.getMonth() + 1; // Месяц (0-11, где 0 — это январь, поэтому прибавляем 1)
