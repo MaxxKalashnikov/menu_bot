@@ -231,7 +231,7 @@ menuRouter.get('/getmenu', async (req, res) => {
 
         if (weekday != 'Saturday' && weekday != 'Sunday') {
 
-            const timeoutDuration = 10000; // 10 секунд на все операции
+            const timeoutDuration = 40000; 
 
             const result = await Promise.race([
 
@@ -292,7 +292,7 @@ menuRouter.get('/getmenu', async (req, res) => {
                     return combinedArray;
                 })(),
 
-                timeout(timeoutDuration) // Таймаут на весь процесс
+                timeout(timeoutDuration) 
             ]);
 
             res.status(200).json(result);
