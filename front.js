@@ -71,7 +71,7 @@ const getMenu = async () => {
 
 const renderMenuItems = (menuFull) => {
     let superItems = ''
-    if(!menuFull && !menuFull.message){
+    if(!menuFull.message){
         menuFull.forEach(rest => {
             superItems += `\n\n\n<b>Restaraunt <i>${rest.name.toUpperCase()}:</i></b>\n`;  // Название ресторана курсивом
             rest.menuList.forEach(item => {

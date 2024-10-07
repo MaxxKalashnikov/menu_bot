@@ -244,24 +244,24 @@ menuRouter.get('/getmenu', async (req, res) => {
                     //mara
                     await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=49&mt=111');
                     await console.log('fetching mara...');
-                    await navigateToDate(page);
                     await changeLang(page);
+                    await navigateToDate(page);
                     const maraArray = await getDataForJamix(page);
                     await console.log('mara fetched');
 
                     //kerttu
                     await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=118');
                     await console.log('fetching kerttu...');
-                    await navigateToDate(page);
                     await changeLang(page);
+                    await navigateToDate(page);
                     const kerttuArray = await getDataForJamix(page);
                     await console.log('kerttu fetched');
 
                     //voltti
                     await page.goto('https://fi.jamix.cloud/apps/menu/?anro=93077&k=70&mt=119');
                     await console.log('fetching voltti...');
-                    await navigateToDate(page);
                     await changeLang(page);
+                    await navigateToDate(page);
                     const volttiArray = await getDataForJamix(page);
                     await console.log('voltti fetched');
 
@@ -306,7 +306,7 @@ menuRouter.get('/getmenu', async (req, res) => {
     }
 });
 
-
+module.exports = {menuRouter}
 // menuRouter.get('/getmenu', async(req, res) => {
 //     try {
 //         let weekday = getCurrentWeekday();
@@ -386,8 +386,6 @@ menuRouter.get('/getmenu', async (req, res) => {
 //         res.status(200).json({ message: "Server does not respond with correct data or restaraunts do not work today. Check 'link' command."});
 //     }
 // })
-
-module.exports = {menuRouter}
 // Получение текущей даты
 // const date = now.getDate(); // День месяца (1-31)
 // const month = now.getMonth() + 1; // Месяц (0-11, где 0 — это январь, поэтому прибавляем 1)
