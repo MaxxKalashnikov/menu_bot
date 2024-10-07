@@ -252,7 +252,7 @@ async function getMenuInTime(){
                 (async () => {
                     // Launch the browser
                     const browser = await puppeteer.launch({ 
-                       // executablePath: '/usr/bin/chromium-browser',
+                        executablePath: '/usr/bin/chromium-browser',
                         headless: true,
                         args: [
                             '--no-sandbox',
