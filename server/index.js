@@ -239,7 +239,16 @@ menuRouter.get('/getmenu', async (req, res) => {
                     // Launch the browser
                     const browser = await puppeteer.launch({ 
                         executablePath: '/usr/bin/chromium-browser',
-                        headless: true });
+                        headless: true,
+                        args: [
+                            '--no-sandbox',
+                            '--disable-setuid-sandbox',
+                            '--disable-dev-shm-usage',  
+                            '--disable-gpu',  
+                            '--no-first-run',
+                            '--no-zygote',
+                          ],
+                     });
                     const page = await browser.newPage();
                     console.log('starting...');
 
