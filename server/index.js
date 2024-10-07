@@ -237,7 +237,7 @@ menuRouter.get('/getmenu', async (req, res) => {
 
                 (async () => {
                     // Launch the browser
-                    const browser = await puppeteer.launch({ headless: "shell" });
+                    const browser = await puppeteer.launch({ headless: true });
                     const page = await browser.newPage();
                     console.log('starting...');
 
