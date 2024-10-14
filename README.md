@@ -1,1 +1,1 @@
-Telegram menu bot
+Telegram menu bot for OAMK

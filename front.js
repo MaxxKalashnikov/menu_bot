@@ -57,10 +57,11 @@ const getDate = () => {
     let formattedTime = `${hours}:${minutes}:${seconds}`
     if(minutes <= 9){
         formattedTime = `${hours}:0${minutes}:${seconds}`
+        return `Menu for today - ${formattedDate}, time: ${formattedTime}`
+    }else{
+        return `Menu for today - ${formattedDate}, time: ${formattedTime}`
     }
     
-
-    return `Menu for today - ${formattedDate}, time: ${formattedTime}`
 }
 
 const getMenu = async () => {
@@ -73,11 +74,11 @@ const renderMenuItems = (menuFull) => {
     let superItems = ''
     if(!menuFull.message){
         menuFull.forEach(rest => {
-            superItems += `\n\n\n<b>Restaraunt <i>${rest.name.toUpperCase()}:</i></b>\n`;  // Название ресторана курсивом
+            superItems += `\n\n\n<b>Restaraunt <i>${rest.name.toUpperCase()}:</i></b>\n`;  
             rest.menuList.forEach(item => {
-                superItems += `\n<b>${item.topic}</b>\n\n`;  // Тема меню жирным
+                superItems += `\n<b>${item.topic}</b>\n\n`;  
                 item.meals.forEach(mmm => {
-                    superItems += `${mmm.meal} diets: <i>${mmm.diets}</i>\n`;  // "diets" курсивом
+                    superItems += `${mmm.meal} (diets: <i>${mmm.diets}</i>)\n`;  
                 });
             });
         });
