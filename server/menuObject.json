@@ -6,7 +6,7 @@
         "topic": "VEGETARIAN DISH OF THE DAY G, VEG",
         "meals": [
           {
-            "meal": "Tofu Sweet Potato Curry with Nuts",
+            "meal": "Lentil Stew with Tomato and Vegetables",
             "diets": [
               "Mu",
               "M",
@@ -36,18 +36,25 @@
         "topic": "LUNCH",
         "meals": [
           {
-            "meal": "Meatballs",
+            "meal": "Blood Crepe",
             "diets": [
-              "Mu",
-              "M"
+              "L"
             ]
           },
           {
-            "meal": "Dark Onion Sauce",
+            "meal": "Egg Sauce",
+            "diets": [
+              "G",
+              "L"
+            ]
+          },
+          {
+            "meal": "Lingonberry Jam",
             "diets": [
               "Mu",
               "M",
-              "G"
+              "G",
+              "VEG"
             ]
           },
           {
@@ -72,7 +79,158 @@
         "topic": "LUNCH  G",
         "meals": [
           {
-            "meal": "Turkey Fajitas Stew",
+            "meal": "Potato and Sausage Hash",
+            "diets": [
+              "Mu",
+              "M",
+              "G"
+            ]
+          },
+          {
+            "meal": "Fried Egg",
+            "diets": [
+              "M",
+              "G"
+            ]
+          },
+          {
+            "meal": "Warm Vegetable Side",
+            "diets": [
+              "G",
+              "VEG"
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "SPECIALLY PRICED LUNCH G, Mu, *",
+        "meals": [
+          {
+            "meal": "Tex Mex Minced Meat Casserole",
+            "diets": [
+              "Mu",
+              "G",
+              "L"
+            ]
+          },
+          {
+            "meal": "Whole Grain Rice",
+            "diets": [
+              "Mu",
+              "M",
+              "G",
+              "VEG"
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "DESSERT",
+        "meals": [
+          {
+            "meal": "Liquorice and Chocolate Mousse",
+            "diets": [
+              "Mu",
+              "G",
+              "L"
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "SALAD AND SOUP",
+        "meals": [
+          {
+            "meal": "Thai Vegetarian Soup",
+            "diets": [
+              "Mu",
+              "M",
+              "G",
+              "VEG"
+            ]
+          },
+          {
+            "meal": "Plentiful salad buffet",
+            "diets": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Kerttu",
+    "menuList": [
+      {
+        "topic": "VEGETARIAN DISH OF THE DAY G, VEG",
+        "meals": [
+          {
+            "meal": "Vegetable chickpea tagine",
+            "diets": [
+              "Mu",
+              "M",
+              "G",
+              "VEG"
+            ]
+          },
+          {
+            "meal": "Whole Grain Rice",
+            "diets": [
+              "Mu",
+              "M",
+              "G",
+              "VEG"
+            ]
+          },
+          {
+            "meal": "Warm Vegetable Side",
+            "diets": [
+              "G",
+              "VEG"
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "LUNCH",
+        "meals": [
+          {
+            "meal": "Crispy Lemon Fish",
+            "diets": [
+              "Mu",
+              "M"
+            ]
+          },
+          {
+            "meal": "Sour Cream Sauce with Chives",
+            "diets": [
+              "Mu",
+              "G",
+              "L"
+            ]
+          },
+          {
+            "meal": "Boiled Potatoes",
+            "diets": [
+              "Mu",
+              "M",
+              "G",
+              "VEG"
+            ]
+          },
+          {
+            "meal": "Warm Vegetable Side",
+            "diets": [
+              "G",
+              "VEG"
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "LUNCH  G",
+        "meals": [
+          {
+            "meal": "Taco Spiced Turkey Stew",
             "diets": [
               "Mu",
               "M",
@@ -98,45 +256,10 @@
         ]
       },
       {
-        "topic": "SPECIALLY PRICED LUNCH",
-        "meals": [
-          {
-            "meal": "Beef Patty",
-            "diets": [
-              "L"
-            ]
-          },
-          {
-            "meal": "Creamy Pepper Sauce",
-            "diets": [
-              "Mu",
-              "G",
-              "L"
-            ]
-          },
-          {
-            "meal": "Roasted Potatoes",
-            "diets": [
-              "Mu",
-              "M",
-              "G",
-              "VEG"
-            ]
-          },
-          {
-            "meal": "Warm Vegetable Side",
-            "diets": [
-              "G",
-              "VEG"
-            ]
-          }
-        ]
-      },
-      {
         "topic": "DESSERT",
         "meals": [
           {
-            "meal": "Blueberry Quark",
+            "meal": "Liquorice and Chocolate Mousse",
             "diets": [
               "Mu",
               "G",
@@ -149,149 +272,11 @@
         "topic": "SALAD AND SOUP",
         "meals": [
           {
-            "meal": "Potatopuré Soup with Cream Cheese",
+            "meal": "Cauliflower Soup",
             "diets": [
               "Mu",
               "G",
               "L"
-            ]
-          },
-          {
-            "meal": "Plentiful salad buffet",
-            "diets": []
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "Kerttu",
-    "menuList": [
-      {
-        "topic": "VEGETARIAN DISH OF THE DAY G, VEG",
-        "meals": [
-          {
-            "meal": "Beetroot Patty",
-            "diets": [
-              "Mu",
-              "M",
-              "G",
-              "VEG"
-            ]
-          },
-          {
-            "meal": "Aioli",
-            "diets": [
-              "Mu",
-              "M",
-              "G",
-              "VEG"
-            ]
-          },
-          {
-            "meal": "Boiled Potatoes",
-            "diets": [
-              "Mu",
-              "M",
-              "G",
-              "VEG"
-            ]
-          },
-          {
-            "meal": "Warm Vegetable Side",
-            "diets": [
-              "G",
-              "VEG"
-            ]
-          }
-        ]
-      },
-      {
-        "topic": "LUNCH",
-        "meals": [
-          {
-            "meal": "Tuna Sauce",
-            "diets": [
-              "Mu",
-              "G",
-              "L"
-            ]
-          },
-          {
-            "meal": "Whole Grain Pasta",
-            "diets": [
-              "Mu",
-              "M",
-              "VEG"
-            ]
-          },
-          {
-            "meal": "Warm Vegetable Side",
-            "diets": [
-              "G",
-              "VEG"
-            ]
-          }
-        ]
-      },
-      {
-        "topic": "LUNCH",
-        "meals": [
-          {
-            "meal": "Chicken Fingers",
-            "diets": [
-              "M"
-            ]
-          },
-          {
-            "meal": "Chili tomato cream cheese sauce",
-            "diets": [
-              "Mu",
-              "G",
-              "L"
-            ]
-          },
-          {
-            "meal": "Warm Vegetable Side",
-            "diets": [
-              "G",
-              "VEG"
-            ]
-          },
-          {
-            "meal": "Dark Rice",
-            "diets": [
-              "Mu",
-              "M",
-              "G",
-              "VEG"
-            ]
-          }
-        ]
-      },
-      {
-        "topic": "DESSERT",
-        "meals": [
-          {
-            "meal": "Blueberry Quark",
-            "diets": [
-              "Mu",
-              "G",
-              "L"
-            ]
-          }
-        ]
-      },
-      {
-        "topic": "SALAD AND SOUP",
-        "meals": [
-          {
-            "meal": "Lentil vegetable soup",
-            "diets": [
-              "Mu",
-              "M",
-              "G",
-              "VEG"
             ]
           }
         ]
@@ -302,10 +287,10 @@
     "name": "Voltti",
     "menuList": [
       {
-        "topic": "VEGETARIAN DISH OF THE DAY G, Mu, VEG, M",
+        "topic": "VEGETARIAN DISH OF THE DAY G, VEG",
         "meals": [
           {
-            "meal": "Beetroot Patty",
+            "meal": "Vegetable chickpea tagine",
             "diets": [
               "Mu",
               "M",
@@ -314,7 +299,7 @@
             ]
           },
           {
-            "meal": "Aioli",
+            "meal": "Whole Grain Rice",
             "diets": [
               "Mu",
               "M",
@@ -323,13 +308,10 @@
             ]
           },
           {
-            "meal": "Brown Rice",
+            "meal": "Warm Vegetable Side",
             "diets": [
-              "Mu",
-              "M",
               "G",
-              "VEG",
-              "L"
+              "VEG"
             ]
           }
         ]
@@ -338,36 +320,14 @@
         "topic": "LUNCH",
         "meals": [
           {
-            "meal": "Chicken Fingers",
+            "meal": "Crispy Lemon Fish",
             "diets": [
+              "Mu",
               "M"
             ]
           },
           {
-            "meal": "Chili tomato cream cheese sauce",
-            "diets": [
-              "Mu",
-              "G",
-              "L"
-            ]
-          },
-          {
-            "meal": "Brown Rice",
-            "diets": [
-              "Mu",
-              "M",
-              "G",
-              "VEG",
-              "L"
-            ]
-          }
-        ]
-      },
-      {
-        "topic": "CLASSIC  G, Mu",
-        "meals": [
-          {
-            "meal": "Sausage Sauce",
+            "meal": "Sour Cream Sauce with Chives",
             "diets": [
               "Mu",
               "G",
@@ -381,6 +341,55 @@
               "M",
               "G",
               "VEG"
+            ]
+          },
+          {
+            "meal": "Warm Vegetable Side",
+            "diets": [
+              "G",
+              "VEG"
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "CLASSIC  G",
+        "meals": [
+          {
+            "meal": "Sausage Stroganoff",
+            "diets": [
+              "Mu",
+              "G",
+              "L"
+            ]
+          },
+          {
+            "meal": "Boiled Potatoes",
+            "diets": [
+              "Mu",
+              "M",
+              "G",
+              "VEG"
+            ]
+          },
+          {
+            "meal": "Warm Vegetable Side",
+            "diets": [
+              "G",
+              "VEG"
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "DESSERT",
+        "meals": [
+          {
+            "meal": "Liquorice and Chocolate Mousse",
+            "diets": [
+              "Mu",
+              "G",
+              "L"
             ]
           }
         ]
@@ -394,11 +403,24 @@
         "topic": "Vegetarian lunch",
         "meals": [
           {
-            "meal": "Seitan kebab with sweet and spicy sauce",
+            "meal": "Vegetable finger",
             "diets": [
+              "Gluten free",
+              "Lactose free",
               "Milk free",
-              "Vegan",
-              "Contains allergens"
+              "Vegan"
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "Lunch 1",
+        "meals": [
+          {
+            "meal": "Chicken with honey sauce",
+            "diets": [
+              "Gluten free",
+              "Lactose free"
             ]
           }
         ]
@@ -407,16 +429,10 @@
         "topic": "Lunch 2",
         "meals": [
           {
-            "meal": "Crispy saithe",
+            "meal": "Meatball",
             "diets": [
-              "Lactose free"
-            ]
-          },
-          {
-            "meal": "Sour cream sauce",
-            "diets": [
-              "Gluten free",
-              "Lactose free"
+              "Lactose free",
+              "Milk free"
             ]
           }
         ]
@@ -425,16 +441,22 @@
         "topic": "Lipasto Grill",
         "meals": [
           {
-            "meal": "Local burger with Viskaali burger",
+            "meal": "Kebab Iskender",
             "diets": [
               "Lactose free"
             ]
           },
           {
-            "meal": "Vegetable burger and fries",
+            "meal": "Iskender",
             "diets": [
               "Milk free",
               "Vegan"
+            ]
+          },
+          {
+            "meal": "Bacon burger with fries",
+            "diets": [
+              "Milk free"
             ]
           }
         ]
@@ -442,14 +464,6 @@
       {
         "topic": "Cafe Lipasto salad bar",
         "meals": [
-          {
-            "meal": "Root vegetable pyree soup with lentils",
-            "diets": [
-              "Gluten free",
-              "Milk free",
-              "Contains allergens"
-            ]
-          },
           {
             "meal": "Salad selection of different vegetables, fruits and proteins.",
             "diets": []
@@ -460,8 +474,9 @@
         "topic": "Evening menu",
         "meals": [
           {
-            "meal": "Pork and noodle bake with Teriyaki",
+            "meal": "Pork sauce with red curry",
             "diets": [
+              "Gluten free",
               "Milk free"
             ]
           }
@@ -471,11 +486,11 @@
         "topic": "Warm sidedish",
         "meals": [
           {
-            "meal": "Potato",
+            "meal": "Brown rice",
             "diets": []
           },
           {
-            "meal": "Brown rice",
+            "meal": "Potato",
             "diets": []
           },
           {
@@ -502,11 +517,24 @@
         "topic": "Vegetarian lunch",
         "meals": [
           {
-            "meal": "Seitan kebab with sweet and spicy sauce",
+            "meal": "Vegetable rolls",
             "diets": [
+              "Gluten free",
+              "Lactose free",
               "Milk free",
-              "Vegan",
-              "Contains allergens"
+              "Vegan"
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "Lunch 1",
+        "meals": [
+          {
+            "meal": "Chicken with honey sauce",
+            "diets": [
+              "Gluten free",
+              "Lactose free"
             ]
           }
         ]
@@ -515,16 +543,10 @@
         "topic": "Lunch 2",
         "meals": [
           {
-            "meal": "Crispy saithe",
+            "meal": "Meat bolls M, inc.allergen",
             "diets": [
-              "Lactose free"
-            ]
-          },
-          {
-            "meal": "Sour cream sauce",
-            "diets": [
-              "Gluten free",
-              "Lactose free"
+              "Lactose free",
+              "Milk free"
             ]
           }
         ]
@@ -533,10 +555,22 @@
         "topic": "Special lunch",
         "meals": [
           {
-            "meal": "Roasted chicken with salsa verde sauce",
+            "meal": "Breaded flatfish with bearnaise sauce, inc.allergen",
+            "diets": []
+          },
+          {
+            "meal": "Roasted potato wedges from Tervakangas farm",
             "diets": [
               "Gluten free",
-              "Milk free"
+              "Milk free",
+              "Vegan"
+            ]
+          },
+          {
+            "meal": "Sour cream sauce with dill and lemon",
+            "diets": [
+              "Gluten free",
+              "Lactose free"
             ]
           }
         ]
@@ -545,11 +579,11 @@
         "topic": "Warm sidedish",
         "meals": [
           {
-            "meal": "Potato",
+            "meal": "Brown rice",
             "diets": []
           },
           {
-            "meal": "Brown rice",
+            "meal": "Potato",
             "diets": []
           },
           {

@@ -252,7 +252,7 @@ async function getMenuInTime(){
                 (async () => {
                     // Launch the browser
                     const browser = await puppeteer.launch({ 
-                        executablePath: '/usr/bin/chromium-browser',
+                        //executablePath: '/usr/bin/chromium-browser',
                         headless: true,
                         args: [
                             '--no-sandbox',
@@ -341,7 +341,9 @@ menuRouter.get('/getmenu', async (req, res) => {
 });
 
 cron.schedule('30 0 * * 1-5', getMenuInTime); 
-cron.schedule('30 8 * * 1-5', getMenuInTime); 
+cron.schedule('30 8 * * 1-5', getMenuInTime);
+cron.schedule('35 8 * * 1-5', getMenuInTime);  
+cron.schedule('50 8 * * 1-5', getMenuInTime); 
 cron.schedule('0 13 * * 1-5', getMenuInTime); 
 
 module.exports = {menuRouter}
